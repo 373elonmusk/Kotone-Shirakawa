@@ -1,16 +1,22 @@
 import os
 
-#Database 
-#Database [https://youtu.be/qFB0cFqiyOM?si=fVicsCcRSmpuja1A]
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://hegodal811:rsRu17pspZAcp6V7@cluster0.prsvqax.mongodb.net/?retryWrites=true&w=majority")
-DB_NAME = os.environ.get("DATABASE_NAME", "cphdlust")
+# ─── Telegram Bot Credentials ───────────────────────────────────────────────
+BOT_TOKEN       = os.environ.get("BOT_TOKEN", "")
+TELEGRAM_API    = os.environ.get("TELEGRAM_API", "")
+TELEGRAM_HASH   = os.environ.get("TELEGRAM_HASH", "")
+ADMINS          = list(map(int, os.environ.get("ADMINS", "5864846606").split()))
 
-#Shortner (token system) 
-# check my discription to help by using my refer link of shareus.io
+# ─── Channel / Chat IDs ─────────────────────────────────────────────────────
+FSUB_ID         = int(os.environ.get("FSUB_ID", "0"))
+DUMP_CHAT_ID    = int(os.environ.get("DUMP_CHAT_ID", "0"))
 
+# ─── Database (MongoDB) ─────────────────────────────────────────────────────
+DB_URI          = os.environ.get("DB_URI", "")      # Render env var: DB_URI
+DB_NAME         = os.environ.get("DB_NAME", "terabot")
 
-SHORTLINK_URL = os.environ.get("SHORTLINK_URL", "ziplinker.net")
-SHORTLINK_API = os.environ.get("SHORTLINK_API", "4b884da539a2f5d579e2a6f805e623c7a082a3b1")
-VERIFY_EXPIRE = int(os.environ.get('VERIFY_EXPIRE', 43200)) # Add time in seconds
-IS_VERIFY = os.environ.get("IS_VERIFY", "True").lower() == "true"
-TUT_VID = os.environ.get("TUT_VID", "https://t.me/ultroid_official/18") # shareus ka tut_vid he 
+# ─── Shortlink / Token Verification ─────────────────────────────────────────
+SHORTLINK_URL   = os.environ.get("SHORTLINK_URL", "ziplinker.net")
+SHORTLINK_API   = os.environ.get("SHORTLINK_API", "")
+VERIFY_EXPIRE   = int(os.environ.get("VERIFY_EXPIRE", 43200))   # seconds (default 12 hrs)
+IS_VERIFY       = os.environ.get("IS_VERIFY", "True").lower() == "true"
+TUT_VID         = os.environ.get("TUT_VID", "https://t.me/ultroid_official/18")

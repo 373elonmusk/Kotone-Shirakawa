@@ -4,8 +4,8 @@ import asyncio
 import random
 import string
 import os
-from pymongo import MongoClient
-from dotenv import load_dotenv
+
+
 from pyrogram import Client, filters
 from pyrogram.enums import ChatMemberStatus
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
@@ -16,11 +16,9 @@ from status import format_progress_bar  # Assuming this is a custom module
 from video import download_video, upload_video  # Assuming these are custom modules
 from database.database import present_user, add_user, full_userbase, del_user, db_verify_status, db_update_verify_status  # Assuming these are custom modules
 from shortzy import Shortzy  # Assuming this is a custom module
-from pymongo.errors import DuplicateKeyError
+
 from web import keep_alive
 from config import *
-
-load_dotenv('config.env', override=True)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -58,23 +56,6 @@ else:
     fsub_id = int(fsub_id)
 
 
-mongo_url = os.environ.get('MONGO_URL', 'mongodb+srv://hegodal811:rsRu17pspZAcp6V7@cluster0.prsvqax.mongodb.net/?retryWrites=true&w=majority')
-client = MongoClient(mongo_url)
-db = client['cphdlust']
-users_collection = db['users']
-
-
-def save_user(user_id, username):
-    try:
-        existing_user = users_collection.find_one({'user_id': user_id})
-        if existing_user is None:
-            users_collection.insert_one({'user_id': user_id, 'username': username})
-            logging.info(f"Saved new user {username} with ID {user_id} to the database.")
-        else:
-            users_collection.update_one({'user_id': user_id}, {'$set': {'username': username}})
-            logging.info(f"Updated user {username} with ID {user_id} in the database.")
-    except DuplicateKeyError as e:
-        logging.error(f"DuplicateKeyError: {e}")
 
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
@@ -242,15 +223,12 @@ Unsuccessful: <code>{unsuccessful}</code>"""
 
 @app.on_message(filters.command("stats") & filters.user(ADMINS))
 async def stats_command(client, message):
-    total_users = users_collection.count_documents({})
-    verified_users = users_collection.count_documents({"verify_status.is_verified": True})
-    unverified_users = total_users - verified_users
+    all_users = await full_userbase()
+    total_users = len(all_users)
 
-    status = f"""<b><u>Verification Stats</u></b>
+    status = f"""<b><u>Bot Stats</u></b>
 
-Total Users: <code>{total_users}</code>
-Verified Users: <code>{verified_users}</code>
-Unverified Users: <code>{unverified_users}</code>"""
+Total Users: <code>{total_users}</code>"""
 
     await message.reply(status)   
 
