@@ -1,0 +1,15 @@
+aria2p
+pyrogram
+pymongo
+motor
+shortzy
+requests
+bs4
+tgcrypto
+uvloop
+aiohttp
+aiofiles
+pyrofork==2.2.11
+python-dotenv
+gunicorn
+flask
